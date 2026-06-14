@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>LedgerFlow | Smart Accounting & Payroll</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafc;
+            color: #1a2c3e;
+            scroll-behavior: smooth;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        /* Header / Navigation */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .logo {
+            font-size: 1.9rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #1e4b6e, #2c7a4d);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .logo i {
+            color: #2c7a4d;
+            background: none;
+            -webkit-background-clip: unset;
+            background-clip: unset;
+            margin-right: 6px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #2c4b66;
+            transition: 0.2s;
+        }
+        .nav-links a:hover {
+            color: #2c7a4d;
+        }
+        .btn-outline {
+            border: 1.5px solid #2c7a4d;
+            padding: 8px 20px;
+            border-radius: 40px;
+            background: transparent;
+            font-weight: 600;
+        }
+        .btn-outline:hover {
+            background: #2c7a4d10;
+        }
+
+        /* Hero Slider Section */
+        .hero-slider {
+            margin: 32px 0 48px 0;
+            position: relative;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
+        }
+        .slider-container {
+            position: relative;
+            width: 100%;
+            min-height: 460px;
+        }
+        .slide {
+            display: none;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 32px;
+            transition: all 0.4s ease;
+        }
+        .slide.active {
+            display: block;
+        }
+        .slide-content {
+            background: linear-gradient(120deg, rgba(10, 30, 40, 0.75), rgba(0,0,0,0.5));
+            backdrop-filter: brightness(0.95);
+            border-radius: 32px;
+            padding: 70px 48px;
+            min-height: 460px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+        }
+        .slide-content h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            max-width: 600px;
+            margin-bottom: 1rem;
+        }
+        .slide-content p {
+            font-size: 1.2rem;
+            max-width: 550px;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        .slide-btn {
+            background: #f9b234;
+            border: none;
+            color: #1e2f3a;
+            font-weight: 700;
+            padding: 12px 32px;
+            border-radius: 40px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: fit-content;
+            transition: 0.2s;
+        }
+        .slide-btn:hover {
+            background: #e6a020;
+            transform: scale(1.02);
+        }
+        /* slider controls */
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.7);
+            border: none;
+            font-size: 1.8rem;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 60px;
+            transition: 0.2s;
+            backdrop-filter: blur(4px);
+            z-index: 10;
+        }
+        .slider-btn:hover {
+            background: white;
+        }
+        .prev {
+            left: 20px;
+        }
+        .next {
+            right: 20px;
+        }
+        .dots {
+            text-align: center;
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            z-index: 10;
+        }
+        .dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin: 0 5px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .dot.active-dot {
+            background: #f9b234;
+            width: 28px;
+        }
+
+        /* description + feature grid */
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 50px 0 24px 0;
+            text-align: center;
+            color: #1e3a4d;
+        }
+        .section-sub {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+            color: #4a627a;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 40px 0;
+        }
+        .feature-card {
+            background: white;
+            border-radius: 28px;
+            padding: 28px 24px;
+            box-shadow: 0 12px 28px -8px rgba(0,0,0,0.05);
+            transition: all 0.25s;
+            text-align: center;
+            border: 1px solid #eef2f6;
+        }
+        .feature-card i {
+            font-size: 2.6rem;
+            color: #2c7a4d;
+            margin-bottom: 20px;
+        }
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+        .feature-card p {
+            color: #4a5568;
+            line-height: 1.5;
+        }
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.12);
+        }
+
+        /* FAQ section */
+        .faq-container {
+            max-width: 880px;
+            margin: 20px auto 60px auto;
+        }
+        .faq-item {
+            background: white;
+            margin-bottom: 18px;
+            border-radius: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            border: 1px solid #e9edf2;
+            overflow: hidden;
+        }
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 28px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.1rem;
+            background: white;
+            transition: 0.1s;
+        }
+        .faq-question i {
+            font-size: 1.2rem;
+            color: #2c7a4d;
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            padding: 0 28px;
+            color: #4a5b6e;
+            line-height: 1.55;
+            background: #fefefe;
+            border-top: 0px solid #eef2f8;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 260px;
+            padding: 0 28px 24px 28px;
+        }
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        /* about, contact, terms, privacy (filter tabs) */
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 48px 0 32px;
+        }
+        .filter-btn {
+            background: #f1f4f9;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #2c4b66;
+        }
+        .filter-btn.active-filter {
+            background: #2c7a4d;
+            color: white;
+            box-shadow: 0 6px 12px rgba(44,122,77,0.2);
+        }
+        .info-panels {
+            background: white;
+            border-radius: 32px;
+            padding: 38px 40px;
+            margin-bottom: 50px;
+            box-shadow: 0 12px 24px -12px rgba(0,0,0,0.05);
+            border: 1px solid #eef2f8;
+        }
+        .info-panel {
+            display: none;
+            animation: fade 0.3s ease;
+        }
+        .info-panel.active-panel {
+            display: block;
+        }
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(8px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .info-panel h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #1d4c3b;
+        }
+        .info-panel p, .info-panel li {
+            line-height: 1.6;
+            color: #2d4a64;
+            margin-bottom: 14px;
+        }
+        .contact-flex {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .contact-flex i {
+            width: 32px;
+            color: #2c7a4d;
+        }
+        hr {
+            margin: 24px 0;
+            border-color: #e2e8f0;
+        }
+
+        /* footer */
+        .footer {
+            background: #0c2a38;
+            color: #cddfe7;
+            padding: 32px 0;
+            text-align: center;
+            margin-top: 40px;
+            border-radius: 40px 40px 0 0;
+        }
+        .footer a {
+            color: #f9b234;
+            text-decoration: none;
+        }
+        @media (max-width: 780px) {
+            .container {
+                padding: 0 20px;
+            }
+            .slide-content h2 {
+                font-size: 1.8rem;
+            }
+            .navbar {
+                flex-direction: column;
+            }
+            .info-panels {
+                padding: 24px;
+            }
+        }
+        button {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-chart-line"></i> LedgerFlow
+        </div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#features">Services</a>
+            <a href="#faq-section">FAQ</a>
+            <a href="#info-tabs">Info Hub</a>
+            <a href="#" class="btn-outline">Client Portal</a>
+        </div>
+    </nav>
+
+    <!-- Slider Images Section -->
+    <div class="hero-slider">
+        <div class="slider-container">
+            <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1554224155-8d04cb21a6dd?w=1200&auto=format');">
+                <div class="slide-content">
+                    <h2>Precision Accounting, Seamless Payroll</h2>
+                    <p>Automate financial workflows, track expenses, and manage payroll in one intelligent platform.</p>
+                    <button class="slide-btn">Get Started <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1554224154-26032ffc0a07?w=1200&auto=format');">
+                <div class="slide-content">
+                    <h2>Real-time Payroll & Tax Filing</h2>
+                    <p>Run payroll in minutes, automate tax calculations, and ensure compliance with local laws.</p>
+                    <button class="slide-btn">Explore Payroll <i class="fas fa-calculator"></i></button>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=1200&auto=format');">
+                <div class="slide-content">
+                    <h2>CFO-level insights</h2>
+                    <p>Live dashboards, forecasting, and intelligent reporting to drive business growth.</p>
+                    <button class="slide-btn">Book a Demo</button>
+                </div>
+            </div>
+            <button class="slider-btn prev" id="prevSlide"><i class="fas fa-chevron-left"></i></button>
+            <button class="slider-btn next" id="nextSlide"><i class="fas fa-chevron-right"></i></button>
+            <div class="dots" id="sliderDots"></div>
+        </div>
+    </div>
+
+    <!-- Description + Feature grid (accounting & payroll description) -->
+    <div id="features"></div>
+    <div class="section-title">Simplify Finance & HR Operations</div>
+    <div class="section-sub">LedgerFlow combines cloud accounting, automated payroll, and real-time compliance — all in one intuitive dashboard.</div>
+    <div class="features-grid">
+        <div class="feature-card">
+            <i class="fas fa-book-open"></i>
+            <h3>Double-Entry Accounting</h3>
+            <p>Track every transaction, reconcile bank feeds, and generate financial statements in seconds.</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-users"></i>
+            <h3>Full-Cycle Payroll</h3>
+            <p>Automated salary calculations, direct deposits, PTO tracking, and tax filings for all 50 states.</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-chart-pie"></i>
+            <h3>Live Analytics & Reports</h3>
+            <p>Customizable P&L, cash flow insights, and payroll summaries to make data-driven decisions.</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-shield-alt"></i>
+            <h3>Bank-Grade Security</h3>
+            <p>256-bit encryption, role-based access, and SOC 2 certified infrastructure.</p>
+        </div>
+    </div>
+
+    <!-- FAQ SECTION -->
+    <div id="faq-section"></div>
+    <div class="section-title">Frequently Asked Questions</div>
+    <div class="faq-container" id="faqContainer">
+        <div class="faq-item">
+            <div class="faq-question">How does your payroll handle tax deductions? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">Our payroll engine automatically calculates federal, state, and local taxes based on employee W-4 information. We also generate tax payment reports and file forms (941, W-2) on your behalf.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Can I integrate with my existing accounting software? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">Absolutely. LedgerFlow supports native integration with QuickBooks, Xero, and REST APIs. You can sync invoices, expenses, and journal entries in real time.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Is there a free trial for payroll & accounting? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">Yes, we offer a 30-day free trial with full access to accounting and payroll features. No credit card required, and onboarding support included.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">How does multi-entity accounting work? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">Our platform supports unlimited entities under one subscription. You can consolidate reports, manage inter-company transactions, and run payroll per entity.</div>
+        </div>
+    </div>
+
+    <!-- FILTER TABS (About, Contact, Terms, Privacy) -->
+    <div id="info-tabs"></div>
+    <div class="filter-tabs">
+        <button class="filter-btn active-filter" data-filter="about">📘 About Us</button>
+        <button class="filter-btn" data-filter="contact">📞 Contact</button>
+        <button class="filter-btn" data-filter="terms">⚖️ Terms of Service</button>
+        <button class="filter-btn" data-filter="privacy">🔒 Privacy Policy</button>
+    </div>
+    
+    <div class="info-panels">
+        <!-- About Panel -->
+        <div class="info-panel active-panel" id="panel-about">
+            <h3><i class="fas fa-building"></i> About LedgerFlow</h3>
+            <p>Founded in 2020, LedgerFlow is on a mission to empower entrepreneurs and finance teams with modern, AI-driven accounting and payroll solutions. We serve over 5,000 businesses across North America and Europe, from startups to mid-market enterprises. Our platform handles billions in transactions annually, ensuring accuracy and compliance.</p>
+            <p>Why choose us? We combine expert support with automation — reducing manual work by 70%, minimizing errors, and providing real-time financial clarity. Certified public accountants and payroll specialists are just a chat away.</p>
+        </div>
+        <!-- Contact Panel -->
+        <div class="info-panel" id="panel-contact">
+            <h3><i class="fas fa-headset"></i> Contact our team</h3>
+            <div class="contact-flex">
+                <p><i class="fas fa-envelope"></i> <strong>Email:</strong> hello@ledgerflow.com</p>
+                <p><i class="fas fa-phone-alt"></i> <strong>Phone:</strong> +1 (888) 472-3347 (Mon-Fri 9am-6pm EST)</p>
+                <p><i class="fas fa-map-marker-alt"></i> <strong>HQ:</strong> 212 Finance Street, Suite 400, Austin, TX 78701</p>
+                <p><i class="fas fa-clock"></i> <strong>Support:</strong> 24/7 priority chat for paid plans & emergency payroll assistance.</p>
+                <hr>
+                <p>📢 Sales: sales@ledgerflow.com &nbsp;&nbsp; | &nbsp; 📄 Partner program: partners@ledgerflow.com</p>
+            </div>
+        </div>
+        <!-- Terms Panel -->
+        <div class="info-panel" id="panel-terms">
+            <h3><i class="fas fa-file-contract"></i> Terms of Service</h3>
+            <p><strong>1. Acceptance of Terms</strong> — By accessing LedgerFlow, you agree to these Terms and our Privacy Policy. Services are provided "as is" with reasonable skill and care.</p>
+            <p><strong>2. Subscription & Billing</strong> — Plans are billed monthly or annually. You may cancel anytime, unused fees are not refunded but remain accessible until billing cycle end.</p>
+            <p><strong>3. Data Ownership</strong> — You retain all rights to your financial data. We do not share without consent, except as required by law or to provide integrations.</p>
+            <p><strong>4. Limitation of Liability</strong> — LedgerFlow is not liable for indirect damages or lost profits beyond the fees paid in the last 6 months.</p>
+            <p><strong>5. Compliance</strong> — You are responsible for accurate employee information. Our payroll tax guarantee covers penalties caused by our errors. Full terms available upon request.</p>
+        </div>
+        <!-- Privacy Panel -->
+        <div class="info-panel" id="panel-privacy">
+            <h3><i class="fas fa-user-secret"></i> Privacy Policy</h3>
+            <p>Last updated: June 2026. LedgerFlow respects your privacy and is committed to protecting your personal and financial information. We collect necessary data (name, email, tax IDs, payroll details) to provide services, process transactions, and comply with legal obligations.</p>
+            <p><strong>Data usage:</strong> We do NOT sell your data to third parties. We may share encrypted data with banking partners or tax agencies solely to facilitate direct deposits or filings. All data is encrypted at rest and in transit.</p>
+            <p><strong>Your rights:</strong> Request access, deletion, or export of your data at any time by emailing privacy@ledgerflow.com. We retain records as required by financial regulations (up to 7 years).</p>
+            <p>Cookies: used for authentication and analytics. You can manage cookie preferences.</p>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2026 LedgerFlow — Intelligent Accounting & Payroll for Modern Businesses</p>
+        <p style="margin-top: 12px; font-size: 0.85rem;">
+            <a href="#">Security</a> &nbsp;|&nbsp; 
+            <a href="#">System Status</a> &nbsp;|&nbsp; 
+            <a href="#">Careers</a>
+        </p>
+    </div>
+</footer>
+
+<script>
+    // ========== IMAGE SLIDER LOGIC ==========
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prevSlide');
+    const nextBtn = document.getElementById('nextSlide');
+    const dotsContainer = document.getElementById('sliderDots');
+    let currentIndex = 0;
+    let slideInterval;
+
+    function updateSlides() {
+        slides.forEach((slide, idx) => {
+            slide.classList.toggle('active', idx === currentIndex);
+        });
+        updateDots();
+    }
+
+    function updateDots() {
+        const dotElements = document.querySelectorAll('.dot');
+        dotElements.forEach((dot, idx) => {
+            dot.classList.toggle('active-dot', idx === currentIndex);
+        });
+    }
+
+    function createDots() {
+        dotsContainer.innerHTML = '';
+        slides.forEach((_, idx) => {
+            const dot = document.createElement('span');
+            dot.classList.add('dot');
+            if (idx === currentIndex) dot.classList.add('active-dot');
+            dot.addEventListener('click', () => {
+                currentIndex = idx;
+                updateSlides();
+                resetAutoSlide();
+            });
+            dotsContainer.appendChild(dot);
+        });
+    }
+
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % slides.length;
+        updateSlides();
+        resetAutoSlide();
+    }
+
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        updateSlides();
+        resetAutoSlide();
+    }
+
+    function resetAutoSlide() {
+        if (slideInterval) clearInterval(slideInterval);
+        slideInterval = setInterval(() => {
+            nextSlide();
+        }, 6000);
+    }
+
+    if (slides.length) {
+        createDots();
+        updateSlides();
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+        resetAutoSlide();
+    }
+
+    // ========== FAQ ACCORDION ==========
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+        const questionDiv = item.querySelector('.faq-question');
+        questionDiv.addEventListener('click', () => {
+            const isActive = item.classList.contains('active');
+            // close others optionally (clean)
+            faqItems.forEach(i => i.classList.remove('active'));
+            if (!isActive) item.classList.add('active');
+        });
+    });
+    // open first faq by default
+    if(faqItems.length) faqItems[0].classList.add('active');
+
+    // ========== FILTER TABS: About, Contact, Terms, Privacy ==========
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const panels = {
+        about: document.getElementById('panel-about'),
+        contact: document.getElementById('panel-contact'),
+        terms: document.getElementById('panel-terms'),
+        privacy: document.getElementById('panel-privacy')
+    };
+
+    function activatePanel(panelId) {
+        Object.values(panels).forEach(panel => {
+            panel.classList.remove('active-panel');
+        });
+        if (panels[panelId]) panels[panelId].classList.add('active-panel');
+    }
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const filterValue = btn.getAttribute('data-filter');
+            filterBtns.forEach(b => b.classList.remove('active-filter'));
+            btn.classList.add('active-filter');
+            if (filterValue === 'about') activatePanel('about');
+            else if (filterValue === 'contact') activatePanel('contact');
+            else if (filterValue === 'terms') activatePanel('terms');
+            else if (filterValue === 'privacy') activatePanel('privacy');
+        });
+    });
+
+    // Optional: scroll to info section when clicking filter (just smooth)
+    const infoTabs = document.getElementById('info-tabs');
+    if(infoTabs) {
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                setTimeout(() => {
+                    infoTabs.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 50);
+            });
+        });
+    }
+
+    // small fix for slider background images unblur
+    function preloadSliderImages() {
+        const bgImages = [
+            "https://images.unsplash.com/photo-1554224155-8d04cb21a6dd?w=1200&auto=format",
+            "https://images.unsplash.com/photo-1554224154-26032ffc0a07?w=1200&auto=format",
+            "https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?w=1200&auto=format"
+        ];
+        bgImages.forEach(src => { const img = new Image(); img.src = src; });
+    }
+    preloadSliderImages();
+
+    // dynamic contact form hover? just static
+    console.log("LedgerFlow landing page ready — accounting, payroll, slider, FAQ, filter tabs.");
+</script>
+</body>
+</html>
